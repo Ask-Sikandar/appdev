@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'home.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -50,7 +50,11 @@ class _LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     child: const Text('NEXT'),
                     onPressed: () {
-                      // TODO: Show the next page (101)
+                      Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                          return ((HomePage()));
+                        }),
+                      );
                     },
                   ),
                   // TODO: Add buttons (101)
