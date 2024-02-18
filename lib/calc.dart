@@ -9,6 +9,7 @@ class Calculator extends StatefulWidget {
 class _CalculatorState extends State<Calculator>{
   var result = '0';
   var userInput = '';
+  var bracketCounter = 0;
 
   void evaluate(String op){
     Parser parser = Parser();
@@ -25,6 +26,7 @@ class _CalculatorState extends State<Calculator>{
       if(text == 'AC'){
         userInput = '';
         result = '0';
+        bracketCounter = 0;
       }
       else {
         userInput += text;
@@ -159,7 +161,33 @@ class _CalculatorState extends State<Calculator>{
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          makeButton('()'),
+                          RawMaterialButton(
+                            onPressed: () {
+                              setState(() {
+                                if(bracketCounter > 0){
+                                    userInput += ')';
+                                    bracketCounter--;
+                                }
+                                else {
+                                  userInput += '(';
+                                  bracketCounter++;
+                                }
+                            }
+                          );
+                          },
+                            elevation: 2.0,
+                            fillColor: Colors.white10,
+                            padding: const EdgeInsets.all(20.0),
+                            shape: const CircleBorder(),
+                            child: Text(
+                              '( )',
+                              style: TextStyle(
+                                color: getTextColor('0'),
+                                fontSize: 30.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                           RawMaterialButton(
                             onPressed: () {
                               userInput += '0';
