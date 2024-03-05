@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'catalogue.dart';
+
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(
+    home: ProductCatalogue(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
