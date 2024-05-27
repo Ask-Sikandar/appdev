@@ -1,3 +1,4 @@
+import 'package:appdev/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,15 +14,30 @@ class LandingPage extends ConsumerStatefulWidget {
 class _LandingPageState extends ConsumerState<LandingPage> {
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
+
+    // Automatically redirect to the login page when unauthenticated
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (authState.status == AuthStatus.unauthenticated) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage(),
+        ));
+      } else if (authState.status == AuthStatus.error && authState.errorMessage != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(authState.errorMessage!)),
+        );
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(onPressed: (){
             ref.read(authProvider.notifier).signOut();
-          }, icon: Icon(Icons.logout))
+          }, icon: const Icon(Icons.logout))
         ],
       ),
-      body: Column(
+      body: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(

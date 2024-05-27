@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:appdev/service/auth_service.dart';
+import '../service/auth_service.dart';
 
 enum AuthStatus {
   authenticated,
@@ -38,8 +38,40 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    state = AuthState(status: AuthStatus.authenticating);
+    try {
+      final User? user = await _authService.signInWithEmailAndPassword(email, password);
+      if (user != null) {
+        state = AuthState(status: AuthStatus.authenticated, user: user);
+      } else {
+        state = AuthState(status: AuthStatus.unauthenticated);
+      }
+    } on FirebaseAuthException catch (e) {
+      state = AuthState(status: AuthStatus.error, errorMessage: e.message);
+    } catch (e) {
+      state = AuthState(status: AuthStatus.error, errorMessage: e.toString());
+    }
+  }
+
+  Future<void> signUpWithEmailAndPassword(String email, String password) async {
+    state = AuthState(status: AuthStatus.authenticating);
+    try {
+      final User? user = await _authService.signUpWithEmailAndPassword(email, password);
+      if (user != null) {
+        state = AuthState(status: AuthStatus.authenticated, user: user);
+      } else {
+        state = AuthState(status: AuthStatus.unauthenticated);
+      }
+    } on FirebaseAuthException catch (e) {
+      state = AuthState(status: AuthStatus.error, errorMessage: e.message);
+    } catch (e) {
+      state = AuthState(status: AuthStatus.error, errorMessage: e.toString());
+    }
+  }
+
   Future<void> signOut() async {
-    await _authService.signOutFromGoogle();
+    await _authService.signOut();
     state = AuthState(status: AuthStatus.unauthenticated);
   }
 }
