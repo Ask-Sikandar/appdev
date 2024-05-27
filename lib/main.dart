@@ -7,10 +7,11 @@ import 'login_screen.dart';
 
 Future<void> main() async {
 
-  runApp(const ProviderScope(child: MyApp()));
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  runApp(ProviderScope(child: MyApp()));
 
 }
 

@@ -20,7 +20,7 @@ class LoginPage extends ConsumerWidget {
       if (authState.status == AuthStatus.authenticated) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const LandingPage()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
       } else if (authState.status == AuthStatus.error && authState.errorMessage != null) {
         ScaffoldMessenger.of(context).showSnackBar(
